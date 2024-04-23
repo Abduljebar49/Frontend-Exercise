@@ -58,11 +58,3 @@ This command creates a production-ready build of the project in the `build` dire
 ## Contributing
 
 We welcome contributions to this project! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-Feel free to customize this README file based on your project's specific requirements and structure.
