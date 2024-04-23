@@ -18,6 +18,12 @@ const ProfilePage = () => {
   useEffect(() => {
     dispatch(fetchProfiles("page=1&limit=10"));
   }, []);
+
+  const logout = () => {
+    localStorage.removeItem("user-data");
+    navigate("/login");
+  };
+  
   return (
     <>
       <div className="flex flex-col items-center justify-center w-screen min-h-screen bg-white py-10">
@@ -25,6 +31,14 @@ const ProfilePage = () => {
         <div className="flex flex-col mt-6">
           <div className="overflow-x-auto">
             <div className="shadow overflow-hidden sm:rounded-lg">
+              <div className="flex justify-end w-full py-4">
+                <button
+                  onClick={()=>logout()}
+                  className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  Logout
+                </button>
+              </div>
               <table className="min-w-full text-sm text-gray-400">
                 <thead className="bg-white shadow-md text-xs uppercase font-medium border border-gray-500">
                   <tr>

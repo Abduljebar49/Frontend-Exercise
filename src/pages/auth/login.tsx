@@ -77,7 +77,7 @@ const LoginPage = () => {
     if (user && user.token) {
       localStorage.setItem("user-data", JSON.stringify(user));
       notify(true, "Successfully logged in");
-      navigate("/profile");
+      navigate("/");
     }
   }, [user]);
 
