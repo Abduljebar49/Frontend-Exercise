@@ -1,8 +1,9 @@
 // sagas.ts
-import { all, call, put, takeEvery } from "redux-saga/effects";
+import { call, put, takeEvery } from "redux-saga/effects";
 import axios, { AxiosResponse } from "axios";
 import { setLocationInfo } from "../reducers/locationSlice";
 
+const key = GOOGLE_MAP_API;
 interface GeoLocation {
   lat: number;
   lng: number;
@@ -25,13 +26,13 @@ function* fetchLocationInfo(): Generator<any, void, AxiosResponse> {
   try {
     const geoResponse: AxiosResponse<GeoLocation> = yield call(
       axios.get,
-      "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBixN5IBXtPnTwZAnJo_o5RqzH00PUyU7A"
+      `https://www.googleapis.com/geolocation/v1/geolocate?key=${key}`
     );
     const { lat, lng } = geoResponse.data;
 
     const geoCodingResponse: AxiosResponse<GeoCodingResponse> = yield call(
       axios.get,
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyBixN5IBXtPnTwZAnJo_o5RqzH00PUyU7A`
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${key}`
     );
     const { results } = geoCodingResponse.data.data;
 
