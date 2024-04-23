@@ -17,7 +17,7 @@ const ProfilePage = () => {
 
   const logout = () => {
     localStorage.removeItem("user-data");
-    navigate("/");
+    navigate("/login");
   };
   
   return (

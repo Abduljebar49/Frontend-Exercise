@@ -1,5 +1,6 @@
 // locationSlice.js
 import { createSlice } from "@reduxjs/toolkit";
+import { stat } from "fs";
 
 const initialState = {
   city: null,
@@ -18,7 +19,9 @@ const locationSlice = createSlice({
       state.lat = action.payload.lat;
       state.lng = action.payload.lng;
     },
-    fetchLocationInfo: () => {},
+    fetchLocationInfo: (state,action) => {
+      
+    },
   },
 });
 

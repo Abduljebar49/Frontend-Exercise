@@ -29,6 +29,9 @@ const Autocomplete = ({ onSelected }: IProps) => {
   }, [inputValue, dispatch]);
 
   useEffect(() => {
+    if(city && country){
+      onSelected(`${city}, ${country}`)
+    }
   }, [city, country]);
 
   useEffect(() => {
@@ -38,10 +41,6 @@ const Autocomplete = ({ onSelected }: IProps) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
     dispatch(setInputValue(inputValue));
-
-    // const filtered = options.filter((option) =>
-    //   option.address?.city.toLowerCase().includes(inputValue.toLowerCase())
-    // );
     setFilteredOptions(options);
     setShowDropdown(true);
   };

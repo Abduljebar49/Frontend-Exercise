@@ -30,8 +30,7 @@ const RegisterPage = () => {
   };
   const [formData, setFormData] = useState<IUserInput>(initData);
   const [formError, setFormError] = useState({ name: "", message: "" });
-  // const [showAlert, setShowAlert] = useState<boolean>(false);
-  // const [alertMesssage, setAlertMessage] = useState<string>("");
+  
   const setAddress = (address: string) => {
     setFormData({ ...formData, address });
   };
@@ -56,6 +55,7 @@ const RegisterPage = () => {
       [name]: tempValue,
     });
   };
+
 
   const isFormValid = (): boolean => {
     for (const key of Object.keys(formData)) {
