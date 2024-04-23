@@ -12,7 +12,6 @@ const ShowAlert = ({ show, setShow, message }: Props) => {
     }, 5000);
     return () => clearTimeout(timer);
   }, []);
-  console.log("showAlert : ", show);
   useEffect(() => {
     setShow(show);
   }, [show]);

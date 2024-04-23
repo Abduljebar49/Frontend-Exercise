@@ -2,6 +2,7 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 import axios, { AxiosResponse } from "axios";
 import { setLocationInfo } from "../reducers/locationSlice";
+import { GOOGLE_MAP_API } from "../../shared/config/secrets";
 
 const key = GOOGLE_MAP_API;
 interface GeoLocation {

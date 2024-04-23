@@ -46,7 +46,6 @@ const ProfileDetail = () => {
   }, [detail]);
 
   const submitForm = () => {
-    console.log(isFormValid());
     if (!isFormValid()) {
       return;
     }
@@ -92,6 +91,14 @@ const ProfileDetail = () => {
         <div className="flex  justify-center my-6 text-4xl">Profile Edit</div>
         <div className="flex justify-center">
           <div className="rounded-lg bg-blue-100 p-10 pt-5 max-w-[600px] w-full">
+          <div className="flex justify-end w-full py-4">
+                <button
+                  onClick={()=>navigate('/')}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  Go Home
+                </button>
+              </div>
             <div className="flex flex-col gap-4">
               <div className="grid gap-6 mb-6 md:grid-cols-2">
                 <div>

@@ -29,7 +29,6 @@ const Autocomplete = ({ onSelected }: IProps) => {
   }, [inputValue, dispatch]);
 
   useEffect(() => {
-    console.log("current city, coutnry : ", city, country);
   }, [city, country]);
 
   useEffect(() => {
@@ -48,7 +47,6 @@ const Autocomplete = ({ onSelected }: IProps) => {
   };
 
   const handleOptionSelect = (option: any) => {
-    console.log("input value ", option);
     const name = `${option.address?.city}, ${option.address.country}`;
     onSelected(name);
     dispatch(setInputValue(name));

@@ -18,7 +18,6 @@ const isAuthenticated = (): boolean => {
 
 const AuthRoute = ({ element, path }: AuthRouteProps) => {
   const authenticated = isAuthenticated();
-  console.log('authenticated : ',authenticated)
   if (path === "/" && !authenticated) {
     return <Navigate to="/login" />;
   }

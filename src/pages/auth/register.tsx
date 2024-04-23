@@ -14,6 +14,7 @@ const RegisterPage = () => {
   const dispatch = useDispatch();
   const error = useSelector((state: RootState) => state.user.error);
   const user = useSelector((state: RootState) => state.user.user);
+  const [submitClick,setSubmitClicked] = useState(false);
   const navigate = useNavigate();
 
   const initData: IUserInput = {
@@ -59,7 +60,7 @@ const RegisterPage = () => {
   const isFormValid = (): boolean => {
     for (const key of Object.keys(formData)) {
       let value: string | boolean = formData[key as keyof LoginInput];
-      if (value.toString().length === 0) {
+      if (key!="profilePicUri" && value.toString().length === 0) {
         setFormError({ name: key, message: `${key} is required` });
         return false;
       }
@@ -74,22 +75,27 @@ const RegisterPage = () => {
   };
 
   const submitForm = () => {
-    console.log(isFormValid());
     if (!isFormValid()) {
       return;
     }
+    setSubmitClicked(true);
     dispatch(registerUser(formData));
   };
   useEffect(() => {
-    if (error) {
-      notify(false, (error as ErrorType).message);
+    if(submitClick){
+      if (error) {
+        notify(false, (error as ErrorType).message);
+      }
     }
   }, [error]);
 
   useEffect(() => {
-    if (user && user.token) {
-      notify(true, "Successfully registered");
-      navigate("/login");
+    if(submitClick){
+      if (user && user.token) {
+        notify(true, "Successfully registered");
+        navigate("/login");
+        return;
+      }
     }
   }, [user]);
 

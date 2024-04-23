@@ -12,16 +12,12 @@ const ProfilePage = () => {
   const openDetail = (id: number) => navigate("/profile/" + id);
 
   useEffect(() => {
-    console.log("profiles : ", profiles);
-  }, [profiles]);
-
-  useEffect(() => {
     dispatch(fetchProfiles("page=1&limit=10"));
   }, []);
 
   const logout = () => {
     localStorage.removeItem("user-data");
-    navigate("/login");
+    navigate("/");
   };
   
   return (

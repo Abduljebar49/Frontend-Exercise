@@ -14,6 +14,7 @@ const LoginPage = () => {
   const error = useSelector((state: RootState) => state.user.error);
   const user = useSelector((state: RootState) => state.user.user);
   const navigate = useNavigate();
+  const [submitClick,setSubmitClicked] = useState(false);
 
   const initData: LoginInput = {
     email: "",
@@ -35,7 +36,6 @@ const LoginPage = () => {
     } else {
       setFormError({ name: name, message: `` });
     }
-    console.log("value : ", value);
     setFormData({
       ...formData,
       [name]: tempValue,
@@ -60,22 +60,22 @@ const LoginPage = () => {
   };
 
   const submitForm = () => {
-    console.log(isFormValid());
-
     if (!isFormValid()) {
       return;
     }
+    setSubmitClicked(true)
     dispatch(loginUser(formData));
   };
   useEffect(() => {
-    if (error) {
-      notify(false, (error as ErrorType).message);
+    if(submitClick){
+      if (error) {
+        notify(false, (error as ErrorType).message);
+      }
     }
   }, [error]);
 
   useEffect(() => {
-    if (user && user.token) {
-      localStorage.setItem("user-data", JSON.stringify(user));
+    if (user && user.token && localStorage.getItem('user-data')) {
       notify(true, "Successfully logged in");
       navigate("/");
     }

@@ -43,7 +43,6 @@ const userSlice = createSlice({
       state.error = null;
     },
     getProfileDetail: (state, action) => {
-      console.log("state.profile : ", state.profiles);
       state.profileDetail = state.profiles?.filter(
         (ele) => ele._id == action.payload
       )[0];
@@ -55,6 +54,7 @@ const userSlice = createSlice({
     loginUser: (state, action) => {
       state.isLoading = true;
       state.user = action.payload;
+      localStorage.setItem("user-data", JSON.stringify(action.payload));
     },
     fetchProfiles: (state, action) => {
       state.isLoading = true;

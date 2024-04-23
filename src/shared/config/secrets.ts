@@ -1,1 +1,1 @@
-const GOOGLE_MAP_API = "ADD_YOUR_API_HERE";
+export const GOOGLE_MAP_API = "AIzaSyBixN5IBXtPnTwZAnJo_o5RqzH00PUyU7A";
