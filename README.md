@@ -1,4 +1,4 @@
-# React Project
+# Frontend-Exercise Project
 
 Welcome to our React project! This project is built with TypeScript and React for creating interactive web applications.
 
@@ -8,12 +8,12 @@ Follow these steps to get the project up and running on your local machine:
 
 1. Clone the repository:
    ```
-   git clone https://github.com/your-username/react-project.git
+   git clone https://github.com/Abduljebar49/Frontend-Exercise.git
    ```
 
 2. Navigate to the project directory:
    ```
-   cd react-project
+   cd Frontend-Exercise
    ```
 
 3. Install dependencies using npm:
