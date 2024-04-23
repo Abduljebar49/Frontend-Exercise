@@ -27,14 +27,13 @@ To use Google Maps features in the project, you need to add your Google Maps API
 
 1. Create a `secrets.ts` file in the `src/config` directory if it doesn't already exist.
 
-2. Open `secrets.ts` and add the following code:
+2. Open `secrets.ts` and change the following code:
    ```typescript
-   export const secrets = {
-     googleMapApiKey: 'YOUR_GOOGLE_MAPS_API_KEY_HERE',
-   };
+   const GOOGLE_MAP_API = "ADD_YOUR_API_HERE";
+
    ```
 
-   Replace `'YOUR_GOOGLE_MAPS_API_KEY_HERE'` with your actual Google Maps API key.
+   Replace `'ADD_YOUR_API_HERE'` with your actual Google Maps API key.
 
 ## How to Run
 
