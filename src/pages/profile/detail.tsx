@@ -1,64 +1,61 @@
-import { useEffect, useState } from "react";
-import Autocomplete from "../../components/AutoComplete";
-import Typography from "../../components/baseComponents/Typography";
-import ShowError from "../../components/ShowError";
-import validation from "../../shared/services/validation";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../../redux/reducers/userSlice";
-import { notify } from "../../shared/services/notify";
 import { RootState } from "../../redux";
-import { ErrorType } from "../../shared/interfaces/error";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+  getProfileDetail,
+  updateProfileDetail,
+} from "../../redux/reducers/userSlice";
+import validation from "../../shared/services/validation";
+import ShowError from "../../components/ShowError";
+import Autocomplete from "../../components/AutoComplete";
 
-const RegisterPage = () => {
+const ProfileDetail = () => {
+  const { id } = useParams();
   const dispatch = useDispatch();
-  const error = useSelector((state: RootState) => state.user.error);
-  const user = useSelector((state: RootState) => state.user.user);
+  const detail = useSelector((state: RootState) => state.user.profileDetail);
   const navigate = useNavigate();
 
-  const initData: IUserInput = {
-    firstName: "",
-    lastName: "",
-    userName: "",
-    profilePicUri: "",
+  const initData: IUserData = {
     address: "",
     email: "",
-    password: "",
-    confirmPassword: "",
+    firstName: "",
     isBuyer: false,
+    lastName: "",
+    profilePic: "",
+    userName: "",
+    _id: 1,
   };
-  const [formData, setFormData] = useState<IUserInput>(initData);
+
+  const [formData, setFormData] = useState<IUserData>(initData);
   const [formError, setFormError] = useState({ name: "", message: "" });
-  // const [showAlert, setShowAlert] = useState<boolean>(false);
-  // const [alertMesssage, setAlertMessage] = useState<string>("");
+
   const setAddress = (address: string) => {
     setFormData({ ...formData, address });
   };
 
-  const goLogin = () => navigate("/login");
+  useEffect(() => {
+    dispatch(getProfileDetail(id));
+  }, []);
 
-  const handleInputChange = (e: any) => {
-    const { name, value } = e.target;
-    let tempValue = value;
-    if (name == "isBuyer") {
-      setFormData({
-        ...formData,
-        [name]: tempValue == "false" ? false : true,
-      });
+  useEffect(() => {
+    if (detail) {
+      setFormData(detail!);
+      //   setAddress(detail.address);
+    }
+  }, [detail]);
+
+  const submitForm = () => {
+    console.log(isFormValid());
+    if (!isFormValid()) {
       return;
     }
-    if (name == "password" || name == "confirmPassword") {
-      isValidPassword(value, name);
-    }
-    setFormData({
-      ...formData,
-      [name]: tempValue,
-    });
+    dispatch(updateProfileDetail(formData));
   };
 
   const isFormValid = (): boolean => {
     for (const key of Object.keys(formData)) {
-      let value: string | boolean = formData[key as keyof LoginInput];
+      let value: string | boolean | number = formData[key as keyof IUserData];
       if (value.toString().length === 0) {
         setFormError({ name: key, message: `${key} is required` });
         return false;
@@ -73,85 +70,28 @@ const RegisterPage = () => {
     return true;
   };
 
-  const submitForm = () => {
-    console.log(isFormValid());
-    if (!isFormValid()) {
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    let tempValue = value;
+    if (name == "isBuyer") {
+      setFormData({
+        ...formData,
+        [name]: tempValue == "false" ? false : true,
+      });
       return;
     }
-    dispatch(registerUser(formData));
-  };
-  useEffect(() => {
-    if (error) {
-      notify(false, (error as ErrorType).message);
-    }
-  }, [error]);
-
-  useEffect(() => {
-    if (user && user.token) {
-      notify(true, "Successfully registered");
-      navigate("/login");
-    }
-  }, [user]);
-
-  const isValidPassword = (value: string, name: string): boolean => {
-    if (!validation.emptyPassword(value)) {
-      setFormError({ message: "This field is required", name: name });
-      return false;
-    }
-    if (!validation.containsNumber(value)) {
-      setFormError({ message: "Should contain at least a number", name: name });
-      return false;
-    }
-    if (!validation.containsUppercase(value)) {
-      setFormError({
-        message: "Should contain at least a uppercase character",
-        name: name,
-      });
-      return false;
-    }
-    if (!validation.containsSpecial(value)) {
-      setFormError({
-        message: "Should contain at least a special character",
-        name: name,
-      });
-      return false;
-    }
-    if (!validation.minLength(value)) {
-      setFormError({ message: "Should be at least 8 characters", name: name });
-      return false;
-    }
-
-    if (name == "confirmPassword" && formData.password !== value) {
-      setFormError({
-        name: "confirmPassword",
-        message: "Password does not match.",
-      });
-      return false;
-    }
-    setFormError({ message: "", name: name });
-    return true;
+    setFormData({
+      ...formData,
+      [name]: tempValue,
+    });
   };
 
   return (
     <div className="flex  w-full bg-white min-h-screen py-8">
       <div className="w-full">
-        <div className="flex  justify-center my-6 text-4xl">
-          Home Test Task Login page
-        </div>
+        <div className="flex  justify-center my-6 text-4xl">Profile Edit</div>
         <div className="flex justify-center">
           <div className="rounded-lg bg-blue-100 p-10 pt-5 max-w-[600px] w-full">
-            <div className="flex w-full flex-col justify-center text-center">
-              <Typography variant="h1" className=" text-3xl font-extrabold">
-                Register Page
-              </Typography>
-              <Typography
-                variant="h4"
-                className="text-button-primary hover:text-button-primary-hover cursor-pointer mt-[10px]  mb-[20px]"
-                onClick={() => goLogin()}
-              >
-                Have an account? Sign In.
-              </Typography>
-            </div>
             <div className="flex flex-col gap-4">
               <div className="grid gap-6 mb-6 md:grid-cols-2">
                 <div>
@@ -206,23 +146,6 @@ const RegisterPage = () => {
                   />
                   <ShowError name="userName" error={formError} />
                 </div>
-                <div>
-                  <label
-                    htmlFor="profilePicUri"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white w-32"
-                  >
-                    Profile Picture Uri
-                  </label>
-                  <input
-                    type="text"
-                    id="profilePicUri"
-                    name="profilePicUri"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    value={formData.profilePicUri}
-                    onChange={(e) => handleInputChange(e)}
-                  />
-                  <ShowError name="profilePicUri" error={formError} />
-                </div>
               </div>
               <div className="mb-6 w-full">
                 <label
@@ -252,40 +175,6 @@ const RegisterPage = () => {
                   onChange={(e) => handleInputChange(e)}
                 />
                 <ShowError name="email" error={formError} />
-              </div>
-              <div className="mb-6">
-                <label
-                  htmlFor="password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white w-20"
-                >
-                  Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  value={formData.password}
-                  onChange={(e) => handleInputChange(e)}
-                />
-                <ShowError name="password" error={formError} />
-              </div>
-              <div className="mb-6">
-                <label
-                  htmlFor="confirmPassword"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white w-36"
-                >
-                  Confirm password
-                </label>
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  value={formData.confirmPassword}
-                  onChange={(e) => handleInputChange(e)}
-                />
-                <ShowError name="confirmPassword" error={formError} />
               </div>
               <div className="flex items-start mb-6">
                 <div className="flex items-center h-5">
@@ -322,4 +211,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default ProfileDetail;
